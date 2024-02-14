@@ -33,9 +33,12 @@ namespace MathQuiz
             int multiplicationCount = 0;
             int divisionCount = 0;
 
+            string question;
+            string questionToCalculate = "";
+
             for (int i = 1; i <= numQuestions; i++)
             {
-                string question;
+                
                 if (i <= 10)
                 {
                     // Generate question with one arithmetic symbol
@@ -49,8 +52,6 @@ namespace MathQuiz
                         num2 = rnd.Next(-50, 51);
                     }
                     question = $"{num1} {op} {num2}";
-
-                    Console.WriteLine($"Additions: {additionCount}\tSubtractions: {subtractionCount}\t\tMultiplications: {multiplicationCount}\tDivisions: {divisionCount}");
 
                     // Update count of arithmetic symbols
                     switch (op)
@@ -79,19 +80,30 @@ namespace MathQuiz
                     int num2 = rnd.Next(-50, 51);
                     int num3 = rnd.Next(-50, 51);
                     question = $"{num1} {op1} {num2} {op2} {num3}";
+                    questionToCalculate = $"{num1} {op1} {num2} {op2} {num3}";
 
-                    if (op1 == '/' && op2 == '*' || op2 == '+' || op2 == '-'){
-                        question = $"({num1} {op1} {num2}) {op2} {num3}";
-                    } else if (op1 == '*' && op2 == '+' || op2 == '-') {
-                        question = $"({num1} {op1} {num2}) {op2} {num3}";
+                    if (op1 == '/' && (op2 == '*' || op2 == '+' || op2 == '-')) {
+                        questionToCalculate = $"({num1} {op1} {num2}) {op2} {num3}";
+                    } else if (op1 == '*' && (op2 == '+' || op2 == '-')) {
+                        questionToCalculate = $"({num1} {op1} {num2}) {op2} {num3}";
                     } else if (op1 == '+' && op2 == '-') {
-                        question = $"({num1} {op1} {num2}) {op2} {num3}";
+                        questionToCalculate = $"({num1} {op1} {num2}) {op2} {num3}";
+                    } else if (op2 == '/' && (op1 == '*' || op1 == '+' || op1 == '-')) {
+                        questionToCalculate = $"{num1} {op1} ({num2} {op2} {num3})";
+                    } else if (op2 == '*' && (op1 == '+' || op1 == '-')) {
+                        questionToCalculate = $"{num1} {op1} ({num2} {op2} {num3})";
+                    } else if (op2 == '+' && op1 == '-') {
+                        questionToCalculate = $"{num1} {op1} ({num2} {op2} {num3})";
                     }
-                    Console.WriteLine(question);
                 }
 
-                double answer = EvaluateQuestion(question);
+                double answer = EvaluateQuestionFirst10(question);
 
+                if (i > 10) {
+                    answer = EvaluateQuestion(questionToCalculate);
+                }
+                
+                
                 Console.Write($"Question {i}: {question} = ");
                 double userAnswer;
                 while (!double.TryParse(Console.ReadLine(), out userAnswer))
@@ -136,7 +148,13 @@ namespace MathQuiz
             return operators[rnd.Next(0, operators.Length)];
         }
 
-        static double EvaluateQuestion(string question)
+        static double EvaluateQuestion(string questionToCalculate)
+        {
+            double result = Convert.ToDouble(new System.Data.DataTable().Compute(questionToCalculate, null));
+            return Math.Round(result, 2);
+        }
+
+        static double EvaluateQuestionFirst10(string question)
         {
             double result = Convert.ToDouble(new System.Data.DataTable().Compute(question, null));
             return Math.Round(result, 2);

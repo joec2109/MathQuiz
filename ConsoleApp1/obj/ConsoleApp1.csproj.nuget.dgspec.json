@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\joeco\\.vscode\\Test\\ConsoleApp1\\ConsoleApp1.csproj": {}
+    "c:\\Users\\joeco\\OneDrive\\Documents\\GitHub\\MathQuiz\\ConsoleApp1\\ConsoleApp1.csproj": {}
   },
   "projects": {
-    "c:\\Users\\joeco\\.vscode\\Test\\ConsoleApp1\\ConsoleApp1.csproj": {
+    "c:\\Users\\joeco\\OneDrive\\Documents\\GitHub\\MathQuiz\\ConsoleApp1\\ConsoleApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\joeco\\.vscode\\Test\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectUniqueName": "c:\\Users\\joeco\\OneDrive\\Documents\\GitHub\\MathQuiz\\ConsoleApp1\\ConsoleApp1.csproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "c:\\Users\\joeco\\.vscode\\Test\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectPath": "c:\\Users\\joeco\\OneDrive\\Documents\\GitHub\\MathQuiz\\ConsoleApp1\\ConsoleApp1.csproj",
         "packagesPath": "C:\\Users\\joeco\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\joeco\\.vscode\\Test\\ConsoleApp1\\obj\\",
+        "outputPath": "c:\\Users\\joeco\\OneDrive\\Documents\\GitHub\\MathQuiz\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joeco\\AppData\\Roaming\\NuGet\\NuGet.Config"
