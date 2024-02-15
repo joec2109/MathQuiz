@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Timers;
 
 namespace MathQuiz
 {
     class Program
     {
+        public static int t = 5;
+        static System.Timers.Timer newTimer = new System.Timers.Timer();
         static void Main(string[] args)
         {
+
+            // Hook up the Elapsed event for the timer.
+            newTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+
             Console.WriteLine("Welcome to the Math Quiz!");
 
             // Get student's name
@@ -18,6 +25,12 @@ namespace MathQuiz
             int timeLimitMinutes = 45; // Default time limit
             Console.Write("Enter the time limit in minutes (45 or 60): ");
             int.TryParse(Console.ReadLine(), out timeLimitMinutes);
+
+            // Set timer variables
+            t = timeLimitMinutes * 60; // Convert minutes to seconds
+            newTimer.Interval = 1000;
+            newTimer.Enabled = true;
+            newTimer.AutoReset = true; // Set to true for continuous counting
 
             // Set number of questions
             int numQuestions = 20;
@@ -38,6 +51,12 @@ namespace MathQuiz
 
             for (int i = 1; i <= numQuestions; i++)
             {
+                // If time has reached 0, exit for loop to save results & end quiz.
+                if (t == 0)
+                {
+                    Console.WriteLine("\aTime's up!");
+                    break;
+                }
                 
                 if (i <= 10)
                 {
@@ -46,10 +65,10 @@ namespace MathQuiz
                     while ((op == '+' && additionCount == 3) || (op == '-' && subtractionCount == 3) || (op == '*' && multiplicationCount == 2) || (op == '/' && divisionCount == 2)) {
                         op = GetRandomOperator(rnd);
                     }
-                    int num1 = rnd.Next(-50, 51);
-                    int num2 = rnd.Next(-50, 51);
+                    int num1 = rnd.Next(0, 51);
+                    int num2 = rnd.Next(0, 51);
                     while (num2 == num1) {
-                        num2 = rnd.Next(-50, 51);
+                        num2 = rnd.Next(0, 51);
                     }
                     question = $"{num1} {op} {num2}";
 
@@ -76,9 +95,9 @@ namespace MathQuiz
                     // Generate question with a combo of two arithmetic symbols
                     char op1 = GetRandomOperator(rnd);
                     char op2 = GetRandomOperator(rnd);
-                    int num1 = rnd.Next(-50, 51);
-                    int num2 = rnd.Next(-50, 51);
-                    int num3 = rnd.Next(-50, 51);
+                    int num1 = rnd.Next(0, 51);
+                    int num2 = rnd.Next(0, 51);
+                    int num3 = rnd.Next(0, 51);
                     question = $"{num1} {op1} {num2} {op2} {num3}";
                     questionToCalculate = $"{num1} {op1} {num2} {op2} {num3}";
 
@@ -104,7 +123,7 @@ namespace MathQuiz
                 }
                 
                 
-                Console.Write($"Question {i}: {question} = ");
+                Console.Write($"\nQuestion {i}: {question} = ");
                 double userAnswer;
                 while (!double.TryParse(Console.ReadLine(), out userAnswer))
                 {
@@ -114,17 +133,13 @@ namespace MathQuiz
 
                 if (userAnswer == answer)
                 {
-                    Console.WriteLine("Correct!");
+                    Console.WriteLine("\n");
                     score++;
                     if (i <= 10) {
                         firstHalfScore += 1;
                     } else {
                         secondHalfScore += 1;
                     }
-                }
-                else
-                {
-                    Console.WriteLine($"Incorrect! The correct answer is {answer}.");
                 }
             }
 
@@ -140,6 +155,14 @@ namespace MathQuiz
 
             // Generate and save report
             GenerateReport(studentName, score, firstHalfScore, secondHalfScore);
+        }
+
+        // TIMER EVENT
+        public static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            if (t > 0) {
+                t--;
+            }
         }
 
         static char GetRandomOperator(Random rnd)
